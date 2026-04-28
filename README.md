@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Oasis
 
-## Getting Started
+인쇄업 중개 개인사업자의 사무업무 자동화 서비스. 작업전표(엑셀) → 견적서(PDF/Excel) 자동 변환.
 
-First, run the development server:
+## 핵심 기능
+
+- 작업전표 `.xlsx` 업로드 (드래그앤드롭 또는 파일 경로 입력)
+- 거래처 / 지사 단위 자동 그룹핑
+- 월별 정산 선택
+- 미리보기에서 모든 필드 수정 가능 (수량, 단위, 단가, 금액 등)
+- **PDF 견적서** 생성 (jsPDF + html2canvas-pro)
+- **Excel 견적서** 생성 (ExcelJS, PDF와 동일 디자인 + 수식)
+- 거래처별 단건 다운로드 또는 전체 ZIP 일괄 다운로드
+
+## 수량 자동 파싱
+
+수량 컬럼의 다양한 표기법을 자동 파싱해 단가를 계산합니다.
+
+| 입력 | 파싱 결과 |
+|---|---|
+| `100`, `1,000` | 그대로 |
+| `100매`, `100세트`, `100부`, `100개`, `100건`, `100장` | 100 |
+| `2천` | 2,000 |
+| `1만`, `10만`, `100만` | 10,000 / 100,000 / 1,000,000 |
+| `1만2천` | 12,000 |
+
+## Tech Stack
+
+- Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS 4
+- ExcelJS (Excel 생성) · SheetJS (Excel 파싱) · jsPDF + html2canvas-pro (PDF) · JSZip
+- Vitest (테스트)
+- Vercel (배포)
+
+## 개발
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev          # http://localhost:3000
+npm run build        # 프로덕션 빌드
+npm run test         # 테스트
+npx tsc --noEmit     # 타입 체크
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

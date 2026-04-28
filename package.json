@@ -6,12 +6,20 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
+    "exceljs": "^4.4.0",
+    "html2canvas-pro": "^2.0.2",
+    "jspdf": "^4.2.1",
+    "jspdf-autotable": "^5.0.7",
+    "jszip": "^3.10.1",
     "next": "16.2.3",
     "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react-dom": "19.2.4",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
@@ -21,6 +29,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.3",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.1.4"
   }
 }
