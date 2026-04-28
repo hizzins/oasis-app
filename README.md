@@ -35,8 +35,21 @@
 
 ```bash
 npm install
-npm run dev          # http://localhost:3000
-npm run build        # 프로덕션 빌드
-npm run test         # 테스트
-npx tsc --noEmit     # 타입 체크
+npm run dev                     # http://localhost:3000
+npm run build                   # 프로덕션 빌드
+npm run test                    # 테스트 (vitest, 31건)
+npx tsc --noEmit                # 타입 체크
+npm run ship "fix: 메시지"      # 테스트→빌드→커밋→푸시→배포 일괄
 ```
+
+## Ship 자동화
+
+`npm run ship "<커밋 메시지>"` 한 줄로 다음을 순차 실행:
+
+1. `npm run test` (vitest)
+2. `npx tsc --noEmit` (타입체크)
+3. `npm run build` (프로덕션 빌드)
+4. `git add -A && git commit -m "<msg>" && git push`
+5. `vercel --prod`
+
+어느 단계든 실패하면 즉시 중단. 변경사항이 없으면 커밋·푸시는 건너뛰고 재배포만 수행.
