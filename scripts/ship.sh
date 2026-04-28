@@ -38,7 +38,15 @@ if [ -n "$(git status --porcelain)" ]; then
   git commit -m "$MSG"
 
   step "GitHub 푸시"
-  git push
+  if ! git push 2>&1; then
+    warn "원격이 앞서 있음 — rebase 시도"
+    if git pull --rebase --autostash; then
+      git push
+    else
+      echo -e "${RED}✕${NC} rebase 충돌 — 수동 해결 후 git push 하세요"
+      exit 1
+    fi
+  fi
 else
   warn "변경사항 없음 — 커밋·푸시 건너뜀"
 fi
