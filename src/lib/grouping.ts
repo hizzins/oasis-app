@@ -2,14 +2,19 @@ import type { WorkOrderRow, InvoiceGroup, ContactInfo } from "./types";
 
 export function groupByClientContact(
   rows: WorkOrderRow[],
-  contacts: ContactInfo[]
+  contacts: ContactInfo[],
+  options: { groupBy?: "auto" | "client" } = {}
 ): InvoiceGroup[] {
-  // Split rows: those with branch go to branch grouping, rest to client grouping
+  const { groupBy = "auto" } = options;
+
+  // Split rows: in "auto" mode, branch rows go to branch grouping, rest to client.
+  // In "client" mode, branch is ignored and everything is grouped by client+contact
+  // (사용자가 거래처 기준으로 통합 견적서를 뽑을 때).
   const branchRows: WorkOrderRow[] = [];
   const clientRows: WorkOrderRow[] = [];
 
   for (const row of rows) {
-    if (row.branch) {
+    if (groupBy === "auto" && row.branch) {
       branchRows.push(row);
     } else {
       clientRows.push(row);

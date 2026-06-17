@@ -91,6 +91,44 @@ describe("groupByClientContact", () => {
   });
 });
 
+describe("groupBy 옵션 (지사/거래처 기준)", () => {
+  it("auto(기본): branch 있는 행은 지사 그룹으로", () => {
+    const rows = [
+      makeRow({ client: "A센터", branch: "서울지사", amount: 10000 }),
+      makeRow({ client: "B센터", branch: "서울지사", amount: 20000 }),
+    ];
+    const groups = groupByClientContact(rows, []);
+    expect(groups.length).toBe(1);
+    expect(groups[0].groupType).toBe("branch");
+    expect(groups[0].branch).toBe("서울지사");
+    expect(groups[0].items.length).toBe(2);
+  });
+
+  it("client 모드: branch 있는 행도 거래처 기준으로 묶음", () => {
+    const rows = [
+      makeRow({ client: "A센터", contact: "김철수 팀장님", branch: "서울지사", amount: 10000 }),
+      makeRow({ client: "A센터", contact: "김철수 팀장님", branch: "서울지사", amount: 20000 }),
+    ];
+    const groups = groupByClientContact(rows, [], { groupBy: "client" });
+    expect(groups.length).toBe(1);
+    expect(groups[0].groupType).toBe("client");
+    expect(groups[0].client).toBe("A센터");
+    expect(groups[0].subtotal).toBe(30000);
+  });
+
+  it("client 모드: 지사 행과 일반 행이 같은 거래처면 한 그룹으로", () => {
+    const rows = [
+      makeRow({ client: "A센터", contact: "김철수 팀장님", branch: "서울지사", amount: 10000 }),
+      makeRow({ client: "A센터", contact: "김철수 팀장님", branch: "", amount: 5000 }),
+    ];
+    const groups = groupByClientContact(rows, [], { groupBy: "client" });
+    expect(groups.length).toBe(1);
+    expect(groups[0].groupType).toBe("client");
+    expect(groups[0].items.length).toBe(2);
+    expect(groups[0].subtotal).toBe(15000);
+  });
+});
+
 describe("금액 계산", () => {
   it("소계 = 항목 금액의 합", () => {
     const rows = [

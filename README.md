@@ -6,7 +6,8 @@
 
 - 작업전표 `.xlsx` 업로드 (드래그앤드롭 또는 파일 경로 입력)
 - 거래처 / 지사 단위 자동 그룹핑
-- 월별 정산 선택
+- **기본 모드:** 단일 월 정산
+- **통합 모드:** 기간(시작~종료 월) + 대상(전체 / 지사 / 거래처) 선택 → 통합 견적서 생성 (거래처 기준 선택 시 지사 행도 거래처로 묶어 한 장으로)
 - 미리보기에서 모든 필드 수정 가능 (수량, 단위, 단가, 금액 등)
 - **PDF 견적서** 생성 (jsPDF + html2canvas-pro)
 - **Excel 견적서** 생성 (ExcelJS, PDF와 동일 디자인 + 수식)
@@ -37,7 +38,7 @@
 npm install
 npm run dev                     # http://localhost:3000
 npm run build                   # 프로덕션 빌드
-npm run test                    # 테스트 (vitest, 31건)
+npm run test                    # 테스트 (vitest, 34건)
 npx tsc --noEmit                # 타입 체크
 npm run ship "fix: 메시지"      # 테스트→빌드→커밋→푸시→배포 일괄
 ```
